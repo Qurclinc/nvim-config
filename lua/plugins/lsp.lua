@@ -3,13 +3,34 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 -- Sntup language servers.
 local lspconfig = require('lspconfig')
 -- lspconfig.pyright.setup {}
-lspconfig.ruff.setup({
-    capabilities = capabilities,  -- Используем те же capabilities, что и для других серверов
-    cmd = { "python3", "-m", "ruff_lsp" },  -- Указываем команду для запуска ruff-lsp
-    settings = {
+-- lspconfig.ruff.setup({
+--    capabilities = capabilities,  -- Используем те же capabilities, что и для других серверов
+--    cmd = { "python3", "-m", "ruff_lsp" },  -- Указываем команду для запуска ruff-lsp
+--    settings = {
         -- Можно добавить настройки, если они необходимы для ruff-lsp
+--    },
+-- })
+-- Настройка python-lsp-server
+lspconfig.pylsp.setup {
+    capabilities = capabilities,
+    cmd = { "pylsp" },  -- Mason автоматически добавит pylsp в PATH
+    settings = {
+        pylsp = {
+            plugins = {
+                jedi_completion = { enabled = true },
+                jedi_hover = { enabled = true },
+                jedi_references = { enabled = true },
+                jedi_signature_help = { enabled = true },
+                jedi_symbols = { enabled = true, all_scopes = true },
+                pycodestyle = { enabled = true, ignore = {'E501'}, maxLineLength = 88 },
+                black = { enabled = true },
+                pylint = { enabled = false },
+                mypy = { enabled = false },
+                yapf = { enabled = false },
+            }
+        }
     },
-})
+}
 lspconfig.ts_ls.setup {}
 lspconfig.prismals.setup {}
 lspconfig.cssls.setup {
@@ -28,9 +49,7 @@ lspconfig.rust_analyzer.setup {
     },
   },
 }
-lspconfig.gopls.setup {
-     capabilities = capabilities   
-}
+
 lspconfig.ast_grep.setup {}
 lspconfig.jdtls.setup {}
 lspconfig.clangd.setup {
