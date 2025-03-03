@@ -72,4 +72,6 @@ require("lazy").setup {
         }
     },
     {'akinsho/toggleterm.nvim', version = "*", config = true},
+    {'hrsh7th/vim-vsnip', event = "InsertEnter"},
+    {'hrsh7th/vim-vsnip-integ', event = "InsertEnter"},
 }

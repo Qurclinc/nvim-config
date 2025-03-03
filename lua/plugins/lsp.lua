@@ -1,5 +1,6 @@
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 -- Sntup language servers.
 local lspconfig = require('lspconfig')
 -- lspconfig.pyright.setup {}
@@ -15,6 +16,13 @@ lspconfig.prismals.setup {}
 lspconfig.cssls.setup {
     capabilities = capabilities
 }
+lspconfig.bashls.setup {
+    capabilities = capabilities,
+    filetypes = { "sh", "bash", "zsh" },
+    cmd = { "bash-language-server", "start" },
+    root_dir = lspconfig.util.find_git_ancestor
+}
+
 lspconfig.golangci_lint_ls.setup {}
 lspconfig.rust_analyzer.setup {
   settings = {
